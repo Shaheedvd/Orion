@@ -1,0 +1,3 @@
+Weekly notes:
+- Research Oriun desktop assistant features
+- Prototype local memory and offline model fallback

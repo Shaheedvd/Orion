@@ -1,0 +1,7 @@
+{
+  "user": "demo_user",
+  "memories": [
+    {"title":"Favorite projects","summary":"User likes building productivity tools and AI assistants."},
+    {"title":"Tone preference","summary":"Prefer analytical, concise, and helpful tone with slight entrepreneurial flair."}
+  ]
+}

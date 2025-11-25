@@ -1,0 +1,7 @@
+{
+  "db_path": "./data/oriun_memory.db",
+  "data_dir": "./data",
+  "openai_api_key": null,
+  "offline_model": null,
+  "permissions": {"drive": false, "screen": false, "automation": false}
+}

@@ -1,0 +1,13 @@
+# Minimal requirements for CI and packaging (avoid heavy optional native deps)
+fastapi
+uvicorn[standard]
+requests
+python-dotenv
+pydantic
+pytest
+
+# Optional features (do not install in CI by default):
+# sentence-transformers
+# faiss-cpu
+# pyllamacpp
+# whisper

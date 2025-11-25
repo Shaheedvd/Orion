@@ -1,0 +1,22 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Install backend deps (light)
+      run: |
+        cd backend
+        python -m venv .venv; source .venv/bin/activate
+        pip install pytest requests
+    - name: Run integration test
+      run: |
+        cd backend
+        python -m pytest -q

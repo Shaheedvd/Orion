@@ -1,0 +1,34 @@
+-- SQLite schema for Oriun memory
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS conversations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  role TEXT,
+  text TEXT,
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS memory_nodes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT,
+  summary TEXT,
+  metadata TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS embeddings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  node_id INTEGER,
+  vector BLOB
+);
+
+CREATE TABLE IF NOT EXISTS permissions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  granted INTEGER,
+  granted_at DATETIME
+);

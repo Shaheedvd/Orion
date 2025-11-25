@@ -1,0 +1,21 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+databases
+aiofiles
+python-dotenv
+requests
+sentence-transformers
+faiss-cpu
+pyttsx3
+pyautogui
+pyperclip
+pyyaml
+cryptography
+whisper
+pyllamacpp
+python-multipart
+pydantic
+
+# Optional: VOSK for offline STT
+vosk

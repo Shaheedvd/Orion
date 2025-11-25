@@ -1,0 +1,8 @@
+{
+  "appId": "com.oriun.desktop",
+  "productName": "Oriun Desktop AI",
+  "win": {
+    "target": ["nsis"],
+    "artifactName": "Oriun-Setup-${version}.exe"
+  }
+}

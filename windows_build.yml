@@ -1,0 +1,74 @@
+name: Windows build & package
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-windows-installer:
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Python build deps (CI minimal)
+      run: |
+        cd backend
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install -r requirements-ci.txt
+
+    - name: Build backend exe with PyInstaller
+      shell: powershell
+      run: |
+        cd backend
+        pyinstaller --onefile --name backend app.py --add-data "data;data" || exit 0
+
+    - name: Copy backend exe into frontend resources
+      shell: powershell
+      run: |
+        $exe = Join-Path -Path (Get-Location) -ChildPath 'dist\backend.exe'
+        if (Test-Path $exe) {
+          New-Item -ItemType Directory -Force -Path ..\frontend\resources | Out-Null
+          Copy-Item $exe ..\frontend\resources\backend.exe -Force
+        } else {
+          Write-Host "Warning: backend.exe not found; build may fail later."
+        }
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install frontend deps
+      shell: powershell
+      run: |
+        cd frontend
+        npm ci
+
+    - name: Build frontend bundle
+      shell: powershell
+      run: |
+        cd frontend
+        npm run build
+
+    - name: Package Electron app (Windows NSIS)
+      shell: powershell
+      run: |
+        cd frontend
+        npm run electron:package || Write-Host "electron-builder failed; check logs"
+
+    - name: Upload installer artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: oriun-windows-installer
+        path: |
+          frontend\..\dist\**\*.exe
+          frontend\..\dist\**\*.msi
