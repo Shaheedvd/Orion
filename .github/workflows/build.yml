@@ -1,0 +1,43 @@
+name: Build Desktop AI
+
+on:
+  workflow_dispatch:          # Manual trigger (recommended)
+  push:
+    branches:
+      - main                  # Auto-build when code is pushed
+  release:
+    types: [published]        # Trigger when publishing a new release
+  # schedule:
+  #   - cron: "0 3 * * *"     # (Optional) Auto-run every morning at 3AM
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Build Desktop AI
+        run: |
+          python build.py
+
+      - name: Package App
+        run: |
+          pip install pyinstaller
+          pyinstaller --noconfirm --onefile src/main.py
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Desktop-AI-Build
+          path: dist/
